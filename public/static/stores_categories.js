@@ -1,0 +1,18 @@
+export const options = [
+    { value: 'Automotive', label: 'Automotive' },
+    { value: 'Baby & Toddler', label: 'Baby & Toddler' },
+    { value: 'Clothing & Shoes', label: 'Clothing & Shoes' },
+    { value: 'Computers', label: 'Computers' },
+    { value: 'Electronics', label: 'Electronics' },
+    { value: 'Entertainment & Arts', label: 'Entertainment & Arts' },
+    { value: 'Food & Gifts', label: 'Food & Gifts' },
+    { value: 'Health & Beauty', label: 'Health & Beauty' },
+    { value: 'Home & Garden', label: 'Home & Garden' },
+    { value: 'Office & Professional Services', label: 'Office & Professional Services' },
+    { value: 'Personal & Home Services', label: 'Personal & Home Services' },
+    { value: 'Restaurants & Dining', label: 'Restaurants & Dining' },
+    { value: 'Software', label: 'Software' },
+    { value: 'Sports & Outdoors', label: 'Sports & Outdoors' },
+    { value: 'Travel', label: 'Travel' },
+    { value: 'Others', label: 'Others' },
+]
