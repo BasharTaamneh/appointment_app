@@ -12,15 +12,15 @@ function BGImage() {
     const [width, setWidth] = useState();
     const [height, setheight] = useState();
 
-    useEffect(() => {
+    useEffect(function width() {
         const { width, height } = getWindowDimensions();
 
         setWidth(width);
 
         setheight(height);
-    }, []);
+    });
 
-    useEffect(() => {
+    useEffect(function widthHighthandler() {
         function handleResize() {
             const { width, height } = getWindowDimensions();
 
@@ -31,7 +31,7 @@ function BGImage() {
 
         window.addEventListener("resize", handleResize);
         return () => window.removeEventListener("resize", handleResize);
-    }, []);
+    });
 
     if (width && height) {
         return (

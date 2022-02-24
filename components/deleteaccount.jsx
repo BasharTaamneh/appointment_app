@@ -3,7 +3,7 @@ import Image from 'next/image'
 import { useState } from 'react'
 import Authaxios from './Authaxios'
 import Errmsg from './errormsg'
-import {mutate} from 'swr'
+import { mutate } from 'swr'
 
 export default function Deleteaccount({ Accdelshowsetter }) {
   mutate()

@@ -12,6 +12,7 @@ export default function Deltstore({ Delstoresetter, storename, store_id }) {
     setTimeout(() => Delstoresetter(), 2000)
   }
 
+  
   async function delstrhandler() {
     await Authaxios()
       .delete(storedeleteURL, {
@@ -71,7 +72,7 @@ export default function Deltstore({ Delstoresetter, storename, store_id }) {
                 <h3 className="py-1 text-xl font-bold ">Are you sure?</h3>
                 <p className="text-md px-2 text-gray-800">
                   Do you really want to delete
-                  <a class="font-bold underline decoration-indigo-500 underline-offset-2">
+                  <a className="font-bold underline decoration-indigo-500 underline-offset-2">
                     {' '}
                     {storename}{' '}
                   </a>

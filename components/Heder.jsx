@@ -7,7 +7,7 @@ export default function Header() {
   const [User, setUser] = useState(null)
   const Router = useRouter()
 
-  useEffect(() => {
+  useEffect(function authChecker() {
     const data = localStorage.getItem('auth')
     if (data) {
       setUser(JSON.parse(data))
@@ -71,13 +71,13 @@ export default function Header() {
                 </a>
                 <a
                   className="my-1 text-sm leading-5 text-white hover:animate-bounce md:mx-4 md:my-0"
-                  href="#"
+                  href="/"
                 >
                   Blog
                 </a>
                 <a
                   className="my-1 text-sm leading-5 text-white hover:animate-bounce md:mx-4 md:my-0"
-                  href="#"
+                  href="/"
                 >
                   Compoents
                 </a>

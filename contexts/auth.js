@@ -41,9 +41,9 @@ export function AuthProvider(props) {
         }
     }
 
-    useEffect(() => {
-        const data = localStorage.getItem("auth")
-        if (data) {
+    useEffect(function authChecker() {
+        if ("auth" in localStorage) {
+            const data = localStorage.getItem("auth")
             setState(JSON.parse(data))
         }
     }, [])

@@ -2,18 +2,24 @@ import { useState } from 'react'
 import Authaxios from '../components/Authaxios'
 import { Icon } from '@iconify/react'
 import Image from 'next/image'
-import useSWR, { mutate } from 'swr'
+import useSWR from 'swr'
 import Sucssmsg from './sucssmsg'
+import Edieappointment from './Appointedite'
 import { Tooltip, ClickAwayListener } from '@mui/material'
 
-export default function Appointments({ storename, Appointmentsetter }) {
+export default function Userappointments({ Appointmentshowsetter }) {
   const [Appointment_id, setAppointment_id] = useState(null)
   const [Appointment_status, setAppointment_status] = useState(null)
   const [Success, setSuccess] = useState(false)
+  const [Editappoint, setEditappoint] = useState(false)
+  const [Appointment_date, setAppointment_date] = useState(null)
+  const [Storename, setStorename] = useState(null)
   const [Helper, setHelper] = useState(false)
-  const storeappointmentsURL = '/appointments/getstoreAppointments?storename='
+
+  const userappointmentsURL = '/appointments/getuserAppointments'
   const updateappointmentURL = '/appointments/updateAppointment'
-  const cancceldcounter = 0
+  const deleteappointmentURL = '/appointments/deleteAppointment'
+
   const handleClick = () => {
     setHelper((prev) => !prev)
   }
@@ -28,11 +34,15 @@ export default function Appointments({ storename, Appointmentsetter }) {
     setTimeout(() => setSuccess(false), 4000)
   }
 
+  function Editappointsetter() {
+    setEditappoint(!Editappoint)
+  }
+
   async function AppointmentUpdate() {
     if (Appointment_status && Appointment_id) {
       const formdata = {}
-      formdata['appointment_id'] = await Appointment_id
-      formdata['status'] = await Appointment_status
+      formdata['status'] = Appointment_status
+      formdata['appointment_id'] = Appointment_id
 
       await Authaxios()
         .put(updateappointmentURL, formdata)
@@ -49,36 +59,52 @@ export default function Appointments({ storename, Appointmentsetter }) {
     mutate()
   }
 
-  if (storename) {
-    const fetchResource = async (url) => {
-      try {
-        const response = await Authaxios().get(url)
-        return response.data
-      } catch (error) {
-        if (
-          error.response.data.message.includes('jwt') ||
-          error.response.data.message.includes('Token')
-        ) {
-          localStorage.removeItem('auth')
-          router.reload()
-        }
-      }
-    }
-    const { data, error, mutate } = useSWR(
-      storeappointmentsURL + storename,
-      fetchResource
-    )
-    const loading = !data && !error
-
-    const StoreAppointments = []
-    if (!loading) {
-      data.data.forEach((element) => {
-        return StoreAppointments.push(element)
-      })
+  async function Appointmentdelete() {
+    if (Appointment_id) {
+      await Authaxios()
+        .delete(deleteappointmentURL, {
+          data: {
+            appointment_id: Appointment_id,
+          },
+        })
+        .then((response) => {
+          response && SuccessHandler()
+        })
+        .catch((err) => {
+          ;(err && err.response.data.message.includes('jwt')) ||
+          err.response.data.message.includes('Token')
+            ? (localStorage.removeItem('auth'), Router.reload())
+            : ''
+        })
     }
     mutate()
   }
-  
+
+  const fetchResource = async (url) => {
+    try {
+      const response = await Authaxios().get(url)
+      return response.data
+    } catch (error) {
+      if (
+        error.response.data.message.includes('jwt') ||
+        error.response.data.message.includes('Token')
+      ) {
+        localStorage.removeItem('auth')
+        router.reload()
+      }
+    }
+  }
+  const { data, error, mutate } = useSWR(userappointmentsURL, fetchResource)
+  const loading = !data && !error
+
+  const Appointments = []
+  if (!loading) {
+    data.data.forEach((element) => {
+      return Appointments.push(element)
+    })
+  }
+
+  mutate()
   return (
     <>
       <div>
@@ -87,7 +113,6 @@ export default function Appointments({ storename, Appointmentsetter }) {
         "
         >
           <div className=" max-h-6xl m-1 mx-auto  block   w-3/4 max-w-6xl items-center justify-center rounded-md bg-gray-100 p-2">
-            {/*       */}
             {/* control */}
             <div className="m-2 flex items-center justify-end">
               {/* helper */}
@@ -102,31 +127,29 @@ export default function Appointments({ storename, Appointmentsetter }) {
                 </Tooltip>
               </ClickAwayListener>
               {Helper && (
-                <div className="md:top-38 lg:top-38 xl:top-38 fixed right-24 top-36 z-10 h-72 w-9/12 snap-y items-center justify-center overflow-auto rounded-md bg-slate-700 bg-opacity-90 p-8 shadow-xl shadow-slate-900 transition-all  duration-1000 sm:right-40 md:right-44 md:w-5/12 lg:right-52 xl:right-56 ">
+                <div className="fixed right-24 top-36 z-10 sm:right-40 md:right-44 md:top-38 lg:right-52 lg:top-38 xl:top-38 xl:right-56 h-72 w-9/12 snap-y items-center justify-center overflow-auto rounded-md bg-slate-700 bg-opacity-90  p-8 shadow-xl shadow-slate-900 transition-all duration-1000 md:w-5/12 ">
                   <ul className="list-outside list-disc text-gray-200">
                     <h2 className="text-md mb-2 text-2xl font-bold">Options</h2>
-                    <li className="text-md font-semibold">ِِAccept</li>
+                    <li className="text-md font-semibold">Edit</li>
                     <ul className="mb-0.5 list-none">
                       <li>
-                        It enables you to accept the appointment on time, as you
-                        can cancel the appointment after that if you change your
-                        mind, but this will remove it from your list.
-                      </li>
-                    </ul>
-                    <li className="text-md font-semibold">Reject</li>
-                    <ul className="mb-0.5 list-none">
-                      <li>
-                        It enables you to reject the appointment as you can
-                        accept it afterward if you change your mind and at the
-                        same time authorizes the buyer to remove it from your
-                        list if he decides to do so.
+                        You can modify the appointment long as the seller has
+                        not accepted it yet.
                       </li>
                     </ul>
                     <li className="text-md font-semibold">Cancel</li>
                     <ul className="mb-0.5 list-none">
                       <li>
-                        It enables you to cancel the appointment if it is
-                        accepted, but this will remove it from your list.
+                        You can cancel the appointment, whether it is accepted
+                        or not.
+                      </li>
+                    </ul>
+                    <li className="text-md font-semibold">Delete</li>
+                    <ul className="mb-0.5 list-none">
+                      <li>
+                        You can delete the appointment from your list in the
+                        event that it was canceled or rejected by the seller or
+                        canceled by you.
                       </li>
                     </ul>
                   </ul>
@@ -137,7 +160,7 @@ export default function Appointments({ storename, Appointmentsetter }) {
               {/* close */}
               <Tooltip title="close" arrow>
                 <button
-                  onClick={() => Appointmentsetter()}
+                  onClick={() => Appointmentshowsetter()}
                   className="rounded-md bg-red-500 shadow-md shadow-slate-700 transition-all duration-100 hover:bg-red-600 hover:shadow-sm"
                 >
                   <Icon icon="line-md:close" className="block h-8 w-8" />
@@ -146,10 +169,11 @@ export default function Appointments({ storename, Appointmentsetter }) {
               {/* close */}
             </div>
             {/* control */}
-            {/*       */}
+            {/*        */}
             {/* Succusse */}
             {Success && Sucssmsg('Action successfully done 😎')}
             {/* Succusse */}
+            {/*        */}
             {loading ? (
               <>
                 {/* loading Appointment */}
@@ -165,29 +189,30 @@ export default function Appointments({ storename, Appointmentsetter }) {
               </>
             ) : (
               <>
-                {StoreAppointments.length ? (
+                {Appointments.length ? (
                   <>
                     {/* Appointments Data */}
                     <div className="h-96 w-auto snap-y overflow-y-scroll p-2 ">
-                      {StoreAppointments.map((appoint, key) => {
+                      {Appointments.map((appoint, key) => {
                         if (appoint.status == 'pending') {
                           return (
                             <>
-                              {/* pending taple */}
+                              {/*pending taple */}
                               <div
                                 key={key}
-                                className="my-8 table w-full overflow-x-scroll rounded-md bg-blue-200 shadow-lg shadow-slate-600 ring-2 ring-blue-500 ring-offset-4 ring-offset-blue-100"
+                                className="my-8 table w-full overflow-x-scroll rounded-md
+                              bg-blue-200 shadow-lg shadow-slate-600 ring-2 ring-blue-500 ring-offset-4 ring-offset-blue-100"
                               >
                                 <div key={key} className=" table-header-group">
                                   <div className="table-row">
                                     <div className="table-cell px-2 text-left font-bold">
-                                      User
+                                      Store
                                     </div>
                                     <div className="table-cell px-2 text-left font-bold">
                                       Appointment Status
                                     </div>
                                     <div className="table-cell px-2 text-left font-bold">
-                                      will Come In
+                                      booked at
                                     </div>
                                     <div className="table-cell px-2 text-left font-bold">
                                       Actions
@@ -197,7 +222,7 @@ export default function Appointments({ storename, Appointmentsetter }) {
                                 <div className="table-row-group">
                                   <div className="my-1 table-row h-full p-1">
                                     <div className="table-cell px-2 font-semibold">
-                                      {appoint.user}
+                                      {appoint.storename}
                                     </div>
                                     <div className="table-cell px-2 font-semibold text-blue-600">
                                       {appoint.status.toUpperCase()}
@@ -213,25 +238,25 @@ export default function Appointments({ storename, Appointmentsetter }) {
                                     <div className="table-cell px-2">
                                       <button
                                         onClick={() => {
-                                          setAppointment_status(null),
-                                            setAppointment_id(appoint.id),
-                                            setAppointment_status('accepted'),
-                                            AppointmentUpdate()
+                                          setAppointment_id(appoint.id),
+                                            setAppointment_date(appoint.date),
+                                            setStorename(appoint.storename),
+                                            Editappointsetter()
                                         }}
                                         className="mx-2 my-2 w-20 rounded-full bg-green-500 p-2 shadow-lg shadow-slate-700 transition-all duration-100 hover:bg-green-600 hover:shadow-sm hover:shadow-slate-500"
                                       >
-                                        Accept
+                                        Edit
                                       </button>
                                       <button
                                         onClick={() => {
-                                          setAppointment_status(null),
-                                            setAppointment_id(appoint.id),
-                                            setAppointment_status('rejected'),
+                                          setAppointment_id(appoint.id),
+                                            setAppointment_status(null),
+                                            setAppointment_status('canceled'),
                                             AppointmentUpdate()
                                         }}
-                                        className="mx-2 my-2 w-20 rounded-full bg-red-500 p-2 shadow-lg shadow-slate-700 transition-all duration-100 hover:bg-red-600 hover:shadow-sm hover:shadow-slate-500"
+                                        className="mx-2 my-2 w-20 rounded-full bg-gray-500 p-2 shadow-lg shadow-slate-700 transition-all duration-100 hover:bg-gray-600 hover:shadow-sm hover:shadow-slate-500"
                                       >
-                                        Reject
+                                        Cancel
                                       </button>
                                     </div>
                                   </div>
@@ -252,13 +277,13 @@ export default function Appointments({ storename, Appointmentsetter }) {
                                 <div key={key} className=" table-header-group">
                                   <div className="table-row">
                                     <div className="table-cell px-2 text-left font-bold">
-                                      User
+                                      Store
                                     </div>
                                     <div className="table-cell px-2 text-left font-bold">
                                       Appointment Status
                                     </div>
                                     <div className="table-cell px-2 text-left font-bold">
-                                      Coming On
+                                      booked At
                                     </div>
                                     <div className="table-cell px-2 text-left font-bold">
                                       Actions
@@ -268,7 +293,7 @@ export default function Appointments({ storename, Appointmentsetter }) {
                                 <div className="table-row-group">
                                   <div className="my-1 table-row h-full p-1">
                                     <div className="table-cell px-2 font-semibold">
-                                      {appoint.user}
+                                      {appoint.storename}
                                     </div>
                                     <div className="table-cell px-2 font-semibold text-green-600">
                                       {appoint.status.toUpperCase()}
@@ -284,8 +309,8 @@ export default function Appointments({ storename, Appointmentsetter }) {
                                     <div className="table-cell px-2">
                                       <button
                                         onClick={() => {
-                                          setAppointment_status(null),
-                                            setAppointment_id(appoint.id),
+                                          setAppointment_id(appoint.id),
+                                            setAppointment_status(null),
                                             setAppointment_status('canceled'),
                                             AppointmentUpdate()
                                         }}
@@ -312,13 +337,13 @@ export default function Appointments({ storename, Appointmentsetter }) {
                                 <div key={key} className=" table-header-group">
                                   <div className="table-row">
                                     <div className="table-cell px-2 text-left font-bold">
-                                      User
+                                      Store
                                     </div>
                                     <div className="table-cell px-2 text-left font-bold">
                                       Appointment Status
                                     </div>
                                     <div className="table-cell px-2 text-left font-bold">
-                                      Was Coming In
+                                      booked At
                                     </div>
                                     <div className="table-cell px-2 text-left font-bold">
                                       Actions
@@ -328,7 +353,7 @@ export default function Appointments({ storename, Appointmentsetter }) {
                                 <div className="table-row-group">
                                   <div className="my-1 table-row h-full p-1">
                                     <div className="table-cell px-2 font-semibold">
-                                      {appoint.user}
+                                      {appoint.storename}
                                     </div>
                                     <div className="table-cell px-2 font-semibold text-red-600">
                                       {appoint.status.toUpperCase()}
@@ -344,14 +369,12 @@ export default function Appointments({ storename, Appointmentsetter }) {
                                     <div className="table-cell px-2">
                                       <button
                                         onClick={() => {
-                                          setAppointment_status(null),
-                                            setAppointment_id(appoint.id),
-                                            setAppointment_status('accepted'),
-                                            AppointmentUpdate()
+                                          setAppointment_id(appoint.id),
+                                            Appointmentdelete()
                                         }}
-                                        className="mx-2 my-2 w-20 rounded-full bg-green-500 p-2 shadow-lg shadow-slate-700 transition-all duration-100 hover:bg-green-600 hover:shadow-sm hover:shadow-slate-500"
+                                        className="mx-2 my-2 w-20 rounded-full bg-rose-600 p-2 shadow-lg shadow-slate-700 transition-all duration-100 hover:bg-rose-800 hover:shadow-sm hover:shadow-slate-500"
                                       >
-                                        Accept
+                                        Delete
                                       </button>
                                     </div>
                                   </div>
@@ -362,28 +385,51 @@ export default function Appointments({ storename, Appointmentsetter }) {
                           )
                         }
                         if (appoint.status == 'canceled') {
-                          cancceldcounter += 1
-                          if (StoreAppointments.length == cancceldcounter){
-                            return (
-                              <>
-                                {/* No Appointments Data */}
-                                <div className="h-auto w-full items-center justify-center rounded-lg bg-cover">
-                                  <div className=" flex w-full animate-pulse items-center justify-center font-bold text-black">
-                                    <p>Your appointments are canceled</p>
-                                  </div>
-                                  <div className="flex w-full items-center justify-center rounded-full">
-                                    <Image
-                                      className="rounded-full"
-                                      src="/emptyshot.gif"
-                                      width={'150%'}
-                                      height={'150%'}
-                                    />
+                          return (
+                            <>
+                              {/* Canceled taple */}
+                              <div
+                                key={key}
+                                className="my-8 table w-full overflow-x-scroll rounded-md bg-gray-200 shadow-lg shadow-slate-600 ring-2 ring-slate-500 ring-offset-4 ring-offset-slate-100"
+                              >
+                                <div key={key} className=" table-header-group">
+                                  <div className="table-row">
+                                    <div className="table-cell px-2 text-left font-bold">
+                                      Store
+                                    </div>
+                                    <div className="table-cell px-2 text-left font-bold">
+                                      Appointment Status
+                                    </div>
+                                    <div className="table-cell px-2 text-left font-bold">
+                                      Actions
+                                    </div>
                                   </div>
                                 </div>
-                                {/* No Appointments Data */}
-                              </>
-                            )
-                          }
+                                <div className="table-row-group">
+                                  <div className="my-1 table-row h-full p-1">
+                                    <div className="table-cell px-2 font-semibold">
+                                      {appoint.storename}
+                                    </div>
+                                    <div className="table-cell px-2 font-semibold text-gray-600">
+                                      {appoint.status.toUpperCase()}
+                                    </div>
+                                    <div className="table-cell px-2">
+                                      <button
+                                        onClick={() => {
+                                          setAppointment_id(appoint.id),
+                                            Appointmentdelete()
+                                        }}
+                                        className="mx-2 my-2 w-20 rounded-full bg-rose-600 p-2 shadow-lg shadow-slate-700 transition-all duration-100 hover:bg-rose-800 hover:shadow-sm hover:shadow-slate-500"
+                                      >
+                                        Delete
+                                      </button>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                              {/* Canceled taple */}
+                            </>
+                          )
                         }
                       })}
                     </div>
@@ -413,6 +459,14 @@ export default function Appointments({ storename, Appointmentsetter }) {
           </div>
         </div>
       </div>
+      {Editappoint && (
+        <Edieappointment
+          storename={Storename}
+          appointment_date={Appointment_date}
+          appointment_id={Appointment_id}
+          Editappointsetter={Editappointsetter}
+        />
+      )}
     </>
   )
 }

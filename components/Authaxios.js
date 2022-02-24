@@ -11,8 +11,8 @@ export default function Authaxios() {
     let req = axios.create({
         baseURL: BaseUrl,
         headers: {
-            Authorization: 
-            `Bearer ${Accessoken}`
+            Authorization:
+                `Bearer ${Accessoken}`
         }
     })
     return req

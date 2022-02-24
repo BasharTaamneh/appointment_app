@@ -11,7 +11,7 @@ import Sellerstores from './Sstorelist'
 
 // *******************
 export default function Sallerland() {
-  mutate();
+  mutate()
   const [Theme, setTheme] = useState(true)
   const [Hover, setHover] = useState(false)
   const [Addshow, setAddshow] = useState(false)
@@ -40,19 +40,19 @@ export default function Sallerland() {
       }
     }
     const { data, error, mutate } = useSWR(userprofileURL, fetchResource)
+    mutate()
     return {
       data: data,
       loading: !data && !error,
     }
   }
   const { data, loading } = UserData()
-  
+
   // *************************************************
 
-  function Storecountesetter(info){
+  function Storecountesetter(info) {
     setStorescount(info)
   }
-
 
   function Addshowsetter() {
     setAddshow(false)
@@ -66,8 +66,7 @@ export default function Sallerland() {
     setAccupdshow(false)
   }
 
-
-  useEffect(() => {
+  useEffect(function Themesetter() {
     if (!('theme' in localStorage)) {
       localStorage.theme = 'dark'
     } else {
@@ -75,7 +74,7 @@ export default function Sallerland() {
         setTheme(false)
       }
     }
-  }, [])
+  })
 
   function theme() {
     if (localStorage.theme === 'light') {
@@ -102,8 +101,8 @@ export default function Sallerland() {
             <div
               className={
                 Theme
-                  ? 'z-1000 transition-all duration-1000 flex h-16 w-full items-center bg-gray-900 px-2'
-                  : 'z-1000 transition-all duration-1000 flex h-16 w-full items-center bg-gray-400 px-2 shadow-md shadow-slate-500'
+                  ? 'z-1000 flex h-16 w-full items-center bg-gray-900 px-2 transition-all duration-1000'
+                  : 'z-1000 flex h-16 w-full items-center bg-gray-400 px-2 shadow-md shadow-slate-500 transition-all duration-1000'
               }
             >
               <div className="mr-4 ml-12 flex w-28 max-w-2xl items-center rounded border border-gray-200 bg-white p-2 shadow-sm sm:w-fit  md:w-fit lg:w-fit">

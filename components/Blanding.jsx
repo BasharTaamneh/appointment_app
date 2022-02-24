@@ -4,11 +4,10 @@ import { Icon } from '@iconify/react'
 import Authaxios from '../components/Authaxios'
 import useSWR, { mutate } from 'swr'
 // *******************
-import Newstore from './newstore'
 import Deleteaccount from './deleteaccount'
 import Updateaccount from './updatprofile'
 import Buyerstrlist from './Bstorelist'
-
+import Userappointments from './userappoitment'
 // *******************
 export default function Buyerland() {
   mutate()
@@ -16,7 +15,7 @@ export default function Buyerland() {
   const [Hover, setHover] = useState(false)
   const [Accdelshow, setAccdelshow] = useState(false)
   const [Accupdshow, setAccupdshow] = useState(false)
-  // const [Storescount, setStorescount] = useState('')
+  const [Appointmentshow, setAppointmentshow] = useState(false)
   const [Search, setSearch] = useState('')
   const router = useRouter()
 
@@ -48,6 +47,10 @@ export default function Buyerland() {
 
   // *************************************************
 
+  function Appointmentshowsetter() {
+    setAppointmentshow(!Appointmentshow)
+  }
+
   function Accdelshowsetter() {
     setAccdelshow(false)
   }
@@ -56,7 +59,7 @@ export default function Buyerland() {
     setAccupdshow(false)
   }
 
-  useEffect(() => {
+  useEffect(function Themesetter() {
     if (!('theme' in localStorage)) {
       localStorage.theme = 'dark'
     } else {
@@ -64,7 +67,7 @@ export default function Buyerland() {
         setTheme(false)
       }
     }
-  }, [])
+  })
 
   function theme() {
     if (localStorage.theme === 'light') {
@@ -166,7 +169,11 @@ export default function Buyerland() {
               id="storeContainer"
               className="ml-12 grid w-10/12  grid-cols-1 grid-rows-2 gap-1  px-4 py-4  md:mx-auto md:grid-cols-2 md:gap-8 lg:grid-cols-2 2xl:grid-cols-3"
             >
-              <Buyerstrlist search={Search} Theme={Theme} />
+              <Buyerstrlist
+                search={Search}
+                Theme={Theme}
+                username={!loading && data.data.username}
+              />
             </div>
           </>
         )}
@@ -256,7 +263,7 @@ export default function Buyerland() {
                 <Icon icon="ant-design:left-outlined" className="h-6 w-6" />
               </div>
               <div
-                // onClick={() =>}
+                onClick={() => Appointmentshowsetter()}
                 className="text-white-600 hover:text-white-800 relative flex h-11 cursor-context-menu flex-row items-center border-l-4 border-transparent pr-6 hover:border-blue-500 hover:bg-blue-800 focus:outline-none dark:hover:border-gray-800 dark:hover:bg-gray-600"
               >
                 <span className="ml-1.5 inline-flex cursor-context-menu items-center justify-center">
@@ -288,6 +295,11 @@ export default function Buyerland() {
         />
       )}
       {/* update profile */}
+      {/* user appointments */}
+      {Appointmentshow && (
+        <Userappointments Appointmentshowsetter={Appointmentshowsetter} />
+      )}
+      {/* user appointments */}
     </>
   )
 }

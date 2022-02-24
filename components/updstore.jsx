@@ -26,7 +26,7 @@ export default function Updstore({
     setTimeout(() => UpdStoresetter(), 2000)
   }
 
-  async function updstrhandler(e) {
+  function updstrhandler(e) {
     e.preventDefault()
     const formData = new FormData()
     Storename && formData.append('storename', Storename)
@@ -35,7 +35,7 @@ export default function Updstore({
     img && formData.append('img', img)
     formData.append('store_id', store_id)
 
-    await Authaxios()
+    Authaxios()
       .put(storeupdateURL, formData)
       .then((response) => {
         response && Succupdstr()
@@ -60,7 +60,7 @@ export default function Updstore({
           {Success ? (
             Sucssmsg(storename + ' store has been successfully Updated 😎')
           ) : (
-            <div className="m-1 mx-auto block  h-auto  max-w-2xl w-3/4 items-center justify-center rounded-md bg-gray-100 p-2">
+            <div className="m-1 mx-auto block  h-auto  w-3/4 max-w-2xl items-center justify-center rounded-md bg-gray-100 p-2">
               <form
                 onSubmit={(e) => {
                   updstrhandler(e)

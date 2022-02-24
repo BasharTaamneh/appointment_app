@@ -9,6 +9,12 @@ export default function sign_in() {
   const { user, login } = useAuth()
   const router = useRouter()
 
+  useEffect(() => {
+    if (user) {
+      router.push('./')
+    }
+  })
+
   return (
     <>
       <Header />
@@ -24,12 +30,7 @@ export default function sign_in() {
       >
         <main className="flex w-full flex-1 flex-col items-center justify-center  px-2 text-center ">
           {!user && <Login login={login} />}
-          {user &&
-            useEffect(function redirect() {
-              router.push('./')
-            })}
         </main>
-
         <Footer />
       </div>
     </>

@@ -1,11 +1,12 @@
 import Authaxios from '../components/Authaxios'
 import useSWR from 'swr'
 import Image from 'next/image'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import Storesloder from './loadingstores'
 import Deltstore from './delstore'
 import Updtstore from './updstore'
 import Appointments from './strappoitment'
+import { Tooltip } from '@mui/material'
 import { Icon } from '@iconify/react'
 
 export default function Sellerstores({ search, Theme, Storecountesetter }) {
@@ -17,6 +18,7 @@ export default function Sellerstores({ search, Theme, Storecountesetter }) {
   const [description, setdescription] = useState()
   const [Store_id, setStore_id] = useState('')
   const [Menu, setMenu] = useState(false)
+  const [UnqKey, setUnqKey] = useState(null)
   const BaseUrl = process.env.API_URL
   const userstoresURL = '/stores/getuserStores'
 
@@ -58,19 +60,25 @@ export default function Sellerstores({ search, Theme, Storecountesetter }) {
     data.data.forEach((element) => {
       return Stores.push(element)
     })
-    Storecountesetter(Stores.length)
   }
+
+  useEffect(() => {
+    if (Stores.length) {
+      setTimeout(() => {
+        Storecountesetter(Stores.length)
+      }, 2000)
+    }
+  })
 
   const StoreData =
     !loading && Stores.filter((info) => info.storename.includes(search))
 
   function Dateconverter(date) {
     const dt = new Date(date)
-    return dt.toDateString()
+    return dt.toLocaleString()
   }
 
   mutate()
-
   return (
     <>
       {loading ? (
@@ -104,14 +112,13 @@ export default function Sellerstores({ search, Theme, Storecountesetter }) {
                           <div className=" z-0  w-full items-center justify-end  p-1">
                             <>
                               <div className="absolute right-0 top-0 m-2 flex w-auto flex-wrap items-end justify-end ">
-                                {!Menu && (
-                                  <div className="absolute -top-1  right-1 -mt-4 -mr-4 rounded-full border bg-slate-900 px-0.5 py-0.5">
-                                    20
-                                  </div>
-                                )}
                                 <button
-                                  onMouseEnter={() => Menuesetter()}
-                                  onClick={() => Menuesetter()}
+                                  onMouseEnter={() => {
+                                    setUnqKey(key), Menuesetter()
+                                  }}
+                                  onClick={() => {
+                                    Menuesetter()
+                                  }}
                                   type="button"
                                   className="block items-center justify-center hover:animate-spin"
                                 >
@@ -120,7 +127,7 @@ export default function Sellerstores({ search, Theme, Storecountesetter }) {
                                     className="block  h-8 w-8"
                                   />
                                 </button>
-                                {Menu && (
+                                {UnqKey === key && Menu && (
                                   <div
                                     onMouseLeave={() => Menuesetter()}
                                     className="h-auto w-full items-center justify-center rounded-md bg-gray-700 shadow-md shadow-slate-400"
@@ -129,7 +136,6 @@ export default function Sellerstores({ search, Theme, Storecountesetter }) {
                                       <a
                                         onClick={() => {
                                           Appointmentsetter(),
-                                            setStore_id(data.id),
                                             setModalStorename(data.storename)
                                         }}
                                         className="flex items-center justify-between px-1  py-3 no-underline"
@@ -198,16 +204,18 @@ export default function Sellerstores({ search, Theme, Storecountesetter }) {
                               {data.location}
                             </p>
                             {/* description */}
-                            <div class="mt-2 flex h-fit items-start justify-start  p-0.5 transition-all  duration-1000">
-                              <details class=" flex w-full  rounded-lg  transition-all duration-1000  open:bg-white open:shadow-lg open:ring-1 open:ring-black/5 dark:open:bg-slate-800 dark:open:ring-white/10">
-                                <summary class="md:text-md xl:text-md select-none  text-sm  font-semibold leading-6 text-slate-400   sm:text-sm lg:text-sm xl:text-lg">
-                                  Description:
-                                </summary>
-                                <div class="mt-2 p-3 text-justify text-sm leading-6  text-slate-300">
-                                  <p>{data.description}</p>
-                                </div>
-                              </details>
-                            </div>
+                            <Tooltip title="Click to show description">
+                              <div className="mt-2 flex h-fit items-start justify-start  p-0.5 transition-all  duration-1000">
+                                <details className=" flex w-full  rounded-lg  transition-all duration-1000  open:bg-white open:shadow-lg open:ring-1 open:ring-black/5 dark:open:bg-slate-800 dark:open:ring-white/10">
+                                  <summary className="md:text-md xl:text-md select-none  text-sm  font-semibold leading-6 text-slate-400   sm:text-sm lg:text-sm xl:text-lg">
+                                    Description:
+                                  </summary>
+                                  <div className="mt-2 p-3 text-justify text-sm leading-6  text-slate-300">
+                                    <p>{data.description}</p>
+                                  </div>
+                                </details>
+                              </div>
+                            </Tooltip>
                             {/* description */}
                           </div>
                         </div>
@@ -256,14 +264,13 @@ export default function Sellerstores({ search, Theme, Storecountesetter }) {
                           <div className=" z-0  w-full items-center justify-end  p-1">
                             <>
                               <div className="absolute right-0 top-0 m-2 flex w-auto flex-wrap items-end justify-end ">
-                                {!Menu && (
-                                  <div className="absolute -top-1  right-1 -mt-4 -mr-4 rounded-full border bg-slate-500 px-0.5 py-0.5">
-                                    20
-                                  </div>
-                                )}
                                 <button
-                                  onClick={() => Menuesetter()}
-                                  onMouseEnter={() => Menuesetter()}
+                                  onMouseEnter={() => {
+                                    setUnqKey(key), Menuesetter()
+                                  }}
+                                  onClick={() => {
+                                    Menuesetter()
+                                  }}
                                   type="button"
                                   className="block items-center justify-center text-gray-100 hover:animate-spin"
                                 >
@@ -272,7 +279,7 @@ export default function Sellerstores({ search, Theme, Storecountesetter }) {
                                     className="block  h-8  w-8 text-gray-100"
                                   />
                                 </button>
-                                {Menu && (
+                                {UnqKey === key && Menu && (
                                   <div
                                     onMouseLeave={() => Menuesetter()}
                                     className="h-auto w-full items-center justify-center rounded-md bg-gray-500 shadow-md shadow-slate-700"
@@ -281,7 +288,6 @@ export default function Sellerstores({ search, Theme, Storecountesetter }) {
                                       <a
                                         onClick={() => {
                                           Appointmentsetter(),
-                                            setStore_id(data.id),
                                             setModalStorename(data.storename)
                                         }}
                                         className="flex items-center justify-between px-1  py-3 no-underline"
@@ -350,16 +356,18 @@ export default function Sellerstores({ search, Theme, Storecountesetter }) {
                               {data.location}
                             </p>
                             {/* description */}
-                            <div class="mt-2 flex h-fit items-start justify-start  p-0.5 transition-all  duration-1000">
-                              <details class=" flex w-full  rounded-lg  transition-all duration-1000  open:bg-white open:shadow-lg open:ring-1 open:ring-black/5 dark:open:bg-gray-500 dark:open:ring-white/10">
-                                <summary class="md:text-md xl:text-md select-none  text-sm  font-semibold leading-6 text-slate-900   sm:text-sm lg:text-sm xl:text-lg">
-                                  Description:
-                                </summary>
-                                <div class="mt-2 p-3 text-justify text-sm leading-6 text-slate-300 ">
-                                  <p>{data.description}</p>
-                                </div>
-                              </details>
-                            </div>
+                            <Tooltip title="Click to show description">
+                              <div className="mt-2 flex h-fit items-start justify-start  p-0.5 transition-all  duration-1000">
+                                <details className=" flex w-full  rounded-lg  transition-all duration-1000  open:bg-white open:shadow-lg open:ring-1 open:ring-black/5 dark:open:bg-gray-500 dark:open:ring-white/10">
+                                  <summary className="md:text-md xl:text-md select-none  text-sm  font-semibold leading-6 text-slate-900   sm:text-sm lg:text-sm xl:text-lg">
+                                    Description:
+                                  </summary>
+                                  <div className="mt-2 p-3 text-justify text-sm leading-6 text-slate-300 ">
+                                    <p>{data.description}</p>
+                                  </div>
+                                </details>
+                              </div>
+                            </Tooltip>
                             {/* description */}
                           </div>
                         </div>
@@ -410,7 +418,6 @@ export default function Sellerstores({ search, Theme, Storecountesetter }) {
         <Appointments
           Appointmentsetter={Appointmentsetter}
           storename={ModalStorename}
-          store_id={Store_id}
         />
       )}
       {/* Appointments menu */}

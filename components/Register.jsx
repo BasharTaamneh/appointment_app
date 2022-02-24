@@ -5,7 +5,8 @@ import NProgress from 'nprogress'
 import Image from 'next/image'
 import Errmsg from './errormsg'
 import Warnmsg from './warnmsg'
-export default function Register({ login, user }) {
+
+export default function Register({ login }) {
   const router = useRouter()
   const baseUrl = process.env.API_URL
   const registerUrl = baseUrl + 'users/register'

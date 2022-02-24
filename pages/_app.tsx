@@ -13,18 +13,19 @@ function Brand({ Component, pageProps }: AppProps) {
 
   useEffect(() => {
     Router.events.on('routeChangeStart', (url) => {
-      NProgress.start();
       setLoading(true)
+      NProgress.start();
     })
     Router.events.on('routeChangeComplete', (url) => {
       NProgress.done();
       setLoading(false)
     })
-  }, [])
-
-
+  })
+  
+  
   return (
     <>
+    {Loading && <Loader />}
       <Head>
         <link rel="icon" href="/favicon.ico" />
         <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
@@ -43,7 +44,6 @@ function Brand({ Component, pageProps }: AppProps) {
 
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
       </Head>
-      {Loading && <Loader />}
       <AuthProvider>
         <Component {...pageProps} />
       </AuthProvider>

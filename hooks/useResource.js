@@ -21,7 +21,7 @@ export default function useResource() {
     const userappointmentsURL = '/appointments/getuserAppointments'
     const storeappointmentsURL = '/appointments/getstoreAppointments'
     const updateappointmentURL = '/appointments/updateAppointment'
-
+    const deleteappointmentURL = '/appointments/deleteAppointment'
     
 
     return ({
