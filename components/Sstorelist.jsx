@@ -19,7 +19,7 @@ export default function Sellerstores({ search, Theme, Storecountesetter }) {
   const [Store_id, setStore_id] = useState('')
   const [Menu, setMenu] = useState(false)
   const [UnqKey, setUnqKey] = useState(null)
-  const BaseUrl = process.env.API_URL
+  const BaseUrl = process.env.NEXT_PUBLIC_API_URL
   const userstoresURL = '/stores/getuserStores'
 
   function Menuesetter() {

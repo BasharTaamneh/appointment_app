@@ -11,7 +11,7 @@ export default function Buyerstores({ search, Theme, username }) {
   const [Appointment, setAppointment] = useState(false)
 
   const [ModalStorename, setModalStorename] = useState('')
-  const BaseUrl = process.env.API_URL
+  const BaseUrl = process.env.NEXT_PUBLIC_API_URL
   const storesearchURL = 'stores/searchStoreslist'
 
   function Appointmentsetter() {
@@ -196,18 +196,18 @@ export default function Buyerstores({ search, Theme, username }) {
                             </p>
                             {/* description */}
                             <Tooltip title="Click to show description">
-                            <div className="mt-2 flex h-fit items-start justify-start  p-0.5 transition-all  duration-1000">
-                              <details className=" flex w-full  rounded-lg  transition-all duration-1000  open:bg-white open:shadow-lg open:ring-1 open:ring-black/5 dark:open:bg-gray-500 dark:open:ring-white/10">
-                                <summary className="md:text-md xl:text-md select-none  text-sm  font-semibold leading-6 text-slate-900   sm:text-sm lg:text-sm xl:text-lg">
-                                  Description:
-                                </summary>
-                                <div className="mt-2 p-3 text-justify text-sm leading-6 text-slate-300 ">
-                                  <p>{data.description}</p>
-                                </div>
-                              </details>
-                            </div>
-                            {/* description */}
-                          </Tooltip>
+                              <div className="mt-2 flex h-fit items-start justify-start  p-0.5 transition-all  duration-1000">
+                                <details className=" flex w-full  rounded-lg  transition-all duration-1000  open:bg-white open:shadow-lg open:ring-1 open:ring-black/5 dark:open:bg-gray-500 dark:open:ring-white/10">
+                                  <summary className="md:text-md xl:text-md select-none  text-sm  font-semibold leading-6 text-slate-900   sm:text-sm lg:text-sm xl:text-lg">
+                                    Description:
+                                  </summary>
+                                  <div className="mt-2 p-3 text-justify text-sm leading-6 text-slate-300 ">
+                                    <p>{data.description}</p>
+                                  </div>
+                                </details>
+                              </div>
+                              {/* description */}
+                            </Tooltip>
                           </div>
                           <>
                             <div className="absolute -bottom-6 right-6 mt-12 flex w-auto flex-wrap items-end  justify-end rounded-full sm:right-48 md:bottom-1 md:right-12 ">

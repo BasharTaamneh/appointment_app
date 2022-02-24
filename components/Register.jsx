@@ -8,14 +8,14 @@ import Warnmsg from './warnmsg'
 
 export default function Register({ login }) {
   const router = useRouter()
-  const baseUrl = process.env.API_URL
+  const baseUrl = process.env.NEXT_PUBLIC_API_URL
   const registerUrl = baseUrl + 'users/register'
   const tokenUrl = baseUrl + 'users/login'
   const [Pflag, setPflag] = useState(false)
   const [Flag, setFlag] = useState(false)
   const [Userflag, setUserflag] = useState(false)
   const [Emailflag, setEmailflag] = useState(false)
-
+  console.log(baseUrl)
   async function handler(e) {
     e.preventDefault()
     setFlag(true)

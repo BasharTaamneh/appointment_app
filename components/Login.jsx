@@ -7,7 +7,7 @@ import Errmsg from './errormsg'
 export default function Login({ login }) {
   const router = useRouter()
   const [message, setmessage] = useState()
-  const baseUrl = process.env.API_URL
+  const baseUrl = process.env.NEXT_PUBLIC_API_URL
   const tokenUrl = baseUrl + 'users/login'
 
   async function handler(e) {

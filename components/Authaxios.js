@@ -1,7 +1,7 @@
 import axios from 'axios'
 
 export default function Authaxios() {
-    const BaseUrl = process.env.API_URL
+    const BaseUrl = process.env.NEXT_PUBLIC_API_URL
     let Accessoken
     const data = localStorage.getItem('auth')
     if (data) {
