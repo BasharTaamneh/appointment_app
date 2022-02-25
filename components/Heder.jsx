@@ -65,7 +65,7 @@ export default function Header() {
               <div className="mt-2 flex flex-col md:mx-1 md:mt-0 md:flex-row">
                 <a
                   className="my-1 text-sm leading-5 text-white hover:animate-bounce md:mx-4 md:my-0"
-                  href="/"
+                  href="/home"
                 >
                   Home
                 </a>
@@ -111,15 +111,26 @@ export default function Header() {
                     Log Out
                   </button>
                 ) : (
-                  <button
-                    type="button"
-                    onClick={() => {
-                      Router.push('./sign_in')
-                    }}
-                    className="mx-1 block w-1/2 rounded bg-gray-500 px-3 py-2 text-center text-sm font-medium leading-5 text-white hover:bg-blue-600 md:mx-2 md:w-auto"
-                  >
-                    Log In
-                  </button>
+                  <>
+                    <button
+                      type="button"
+                      onClick={() => {
+                        Router.push('./sign_in')
+                      }}
+                      className="mx-1 flex w-1/2 items-center rounded bg-gray-500 px-3 py-2 text-center text-sm font-medium leading-5 text-white hover:bg-gray-700 hover:shadow-sm hover:shadow-slate-300 md:mx-2 md:w-auto"
+                    >
+                      Log In
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => {
+                        Router.push('./sign_up')
+                      }}
+                      className="mx-1 flex w-1/2 items-center rounded bg-gray-500 px-3 py-2 text-center text-sm font-medium leading-5 text-white hover:bg-gray-700 hover:shadow-sm hover:shadow-slate-300 md:mx-2 md:w-auto"
+                    >
+                      Sign Up
+                    </button>
+                  </>
                 )}
               </div>
             </div>

@@ -11,7 +11,7 @@ export default function Sallerpage() {
   
   useEffect(() => {
     if (!user) {
-      Router.push('./sign_in')
+      Router.push('./home')
     }
   })
 

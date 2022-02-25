@@ -2,7 +2,7 @@ import Head from 'next/head'
 import { useEffect } from 'react'
 import { useAuth } from '../contexts/auth'
 import { useRouter } from 'next/router'
-export default function Home() {
+export default function Bacerout() {
   const Router = useRouter()
   const { user } = useAuth()
 
@@ -15,7 +15,7 @@ export default function Home() {
         Router.push('./seller_landing')
       }
     } else {
-      Router.push('./sign_in')
+      Router.push('./home')
     }
   })
 
