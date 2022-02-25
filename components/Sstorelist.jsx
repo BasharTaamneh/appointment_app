@@ -106,16 +106,12 @@ export default function Sellerstores({ search, Theme, Storecountesetter }) {
                             key={key}
                             className="items-cnter relative z-0 m-1 mx-auto block h-auto w-full justify-between rounded-md bg-gray-800 p-4 shadow-lg shadow-gray-900 md:flex lg:flex xl:flex"
                           >
-                            <div className=" flex h-64  w-full justify-center rounded-md bg-gray-800 bg-cover">
-                              <Image
-                                className=" z-0  mx-auto w-full rounded-md"
-                                src={BaseUrl + data.img}
-                                alt="Store backgroundImage"
-                                width={'300%'}
-                                height={'300%'}
-                                placeholder="blur"
-                                blurDataURL="/placeholder.png"
-                              />
+                            <div className=" h-64 w-full justify-center rounded-md bg-cover"
+                            style={{
+                                backgroundImage:`url("${BaseUrl + data.img}")`,
+                                backgroundSize: "100% 100%"
+                              }}
+                              >
                             </div>
 
                             <div className=" z-0  w-full items-center justify-end  p-1">
@@ -264,16 +260,13 @@ export default function Sellerstores({ search, Theme, Storecountesetter }) {
                             key={key}
                             className="items-cnter relative z-0 m-1 mx-auto block h-auto w-full justify-between rounded-md bg-gray-400 p-4 shadow-lg shadow-gray-600 md:flex lg:flex xl:flex"
                           >
-                            <div className="flex h-64 w-full  justify-center rounded-md bg-gray-400 bg-cover ">
-                              <Image
-                                className=" z-0  mx-auto w-full rounded-md"
-                                src={BaseUrl + data.img}
-                                alt="Store backgroundImage"
-                                width={'300%'}
-                                height={'300%'}
-                                placeholder="blur"
-                                blurDataURL="/placeholder.png"
-                              />
+                            <div
+                              className=" z-10 h-64 w-full justify-center rounded-md bg-cover "
+                              style={{
+                                backgroundImage:`url("${BaseUrl + data.img}")`,
+                                backgroundSize: "100% 100%"
+                              }}
+                            >
                             </div>
                             <div className=" z-0  w-full items-center justify-end  p-1">
                               <>
